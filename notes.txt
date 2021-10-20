@@ -1,0 +1,36 @@
+"""
+    str_a = TATA
+    str_b = TCT
+
+    1) AGREGAR GAP  // SCORE = 0 
+    3) MISMATCH     // SCORE = -1
+    4) MATCH        // SCORE = 1
+
+    BOTTOM-UP es el algo:
+    
+    Memoizacion Matrix:
+    [
+        [ , _, T, C, T],
+        [_, 0, 0, 0, 0],
+        [T, 0, 1,  ,  ],
+        [A, 0,  ,  ,  ],
+        [A, 0,  ,  ,  ],
+        [A, 0,  ,  ,  ],
+    ]
+
+    "Si poner gap fuese -1":
+    [
+        [ ,  _,  T,  C,  T],
+        [_,  0, -1, -2, -3],
+        [T, -1,  1,  ,     ],
+        [A, -2,  ,  ,     ],
+        [A, -3,  ,  ,     ],
+        [A, -4,  ,  ,     ],
+    ]
+
+    ir en sentido horizontal: agregar gap en A
+    ir en sentido vertical: agregar gap en B
+    ir en sentido diagonal: match/mismatch
+
+    Reconstruir la solucion es basicamente crear otra matriz con la pista para reconstruir la solucion (greedy)
+"""
