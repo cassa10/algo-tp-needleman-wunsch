@@ -48,9 +48,12 @@ def nw(seqA_str, seqB_str, score_mtx, gap_score=0):
                 gap_en_b = table[i][j-1]
                 table[i][j] = max(gap_en_a, gap_en_b) + 0
 
-    return table[row-1, col-1]
-    #return table
+    return [table[row-1, col-1], table]
 
+def traceback(tabla_sol, seqA, seqB):
+    aln_a = "X"
+    aln_b = "Y"
+    return [aln_a, aln_b]
 
 def init_score_mtx(s1, s2):
     """ example:
