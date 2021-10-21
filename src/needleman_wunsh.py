@@ -1,5 +1,6 @@
 import numpy as np
 from enum import Enum
+import test
 
 class op(Enum):
     GAP_A = 1
@@ -47,7 +48,8 @@ def nw(seqA_str, seqB_str, score_mtx, gap_score=0):
             else: 
                 table[i][j] = 0.0
 
-    return table
+    return table[row-1, col-1]
+    #return table
 
 
 def init_score_mtx(s1, s2):
@@ -72,9 +74,3 @@ def scoreOf(c1, c2):
     if c1 == c2:
         return 1
     return 0
-
-if __name__ == '__main__':
-    s1 = "ATC"
-    s2 = "ATCT"
-    #print(init_score_mtx(s1, s2))
-    print(init(s1, s2))
