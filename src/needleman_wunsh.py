@@ -1,6 +1,5 @@
 import numpy as np
 from enum import Enum
-import test
 
 class op(Enum):
     GAP_A = 1
@@ -42,11 +41,12 @@ def nw(seqA_str, seqB_str, score_mtx, gap_score=0):
     for i in range(1, row):
         for j in range(1, col):
             match_score = score_mtx[i-1][j-1]
-            prev = table[i - 1][j - 1]
-            if match_score > gap_score and prev is not None:
+            if match_score > gap_score:
                 table[i][j] = table[i-1][j-1] + match_score
-            else: 
-                table[i][j] = 0.0
+            else:
+                gap_en_a = table[i-1][j]
+                gap_en_b = table[i][j-1]
+                table[i][j] = max(gap_en_a, gap_en_b) + 0
 
     return table[row-1, col-1]
     #return table
