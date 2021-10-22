@@ -30,8 +30,9 @@ def test_2():
     fas_A = next(f_aln)
     fas_B = next(f_aln)
 
-    seq_A = str(fas_A.seq)
-    seq_B = str(fas_B.seq)
+    seq_A = str(fas_A.seq)[:6]
+    seq_B = str(fas_B.seq)[:6]
+    seq_B = 'GCCGCT'
 
     aln = pairwise2.align.globalxx(seq_A, seq_B)
     aln_score = aln[0].score

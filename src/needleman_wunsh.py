@@ -1,12 +1,6 @@
 import numpy as np
 from enum import Enum
 
-class op(Enum):
-    GAP_A = 1
-    GAP_B = 2
-    MA_MM = 3
-
-
 def init(s1, s2):
     score_mtx = init_score_mtx(s1, s2)
     gap_score = 0
@@ -51,8 +45,29 @@ def nw(seqA_str, seqB_str, score_mtx, gap_score=0):
     return [table[row-1, col-1], table]
 
 def traceback(tabla_sol, seqA, seqB):
-    aln_a = "X"
-    aln_b = "Y"
+    i = len(seqA)
+    j = len(seqB)
+
+    aln_a = ""
+    aln_b = ""
+    #TODO: Hay un caso que me pone _ en vez de matchear
+    while i > 0 and j > 0:
+        ma_mm = tabla_sol[i][j]
+        gap_a = tabla_sol[i-1][j]
+        gap_b = tabla_sol[i][j-1]
+
+        if (ma_mm > gap_a) and (ma_mm > gap_b):
+            aln_a = seqA[i - 1] + aln_a
+            aln_b = seqB[j - 1] + aln_b
+        elif gap_a <= gap_b:
+            aln_a = "_" + aln_a
+            aln_b = seqB[j - 1] + aln_b
+        else:
+            aln_a = seqB[i - 1] + aln_a
+            aln_b = "_" + aln_b
+        i = i - 1
+        j = j - 1
+
     return [aln_a, aln_b]
 
 def init_score_mtx(s1, s2):

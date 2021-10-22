@@ -1,4 +1,3 @@
-import needleman_wunsh
 import test
 
 if __name__ == '__main__':
