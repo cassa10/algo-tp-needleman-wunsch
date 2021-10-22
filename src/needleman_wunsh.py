@@ -1,4 +1,10 @@
 import numpy as np
+from enum import Enum
+
+class Op(Enum):
+    GAP_A = 1
+    GAP_B = 2
+    MA_MM = 3
 
 def init(s1, s2):
     score_mtx = init_score_mtx(s1, s2)
@@ -58,14 +64,16 @@ def traceback(tabla_sol, seqA, seqB):
         if (ma_mm > gap_a) and (ma_mm > gap_b):
             aln_a = seqA[i - 1] + aln_a
             aln_b = seqB[j - 1] + aln_b
+            i = i - 1
+            j = j - 1
         elif gap_a <= gap_b:
             aln_a = "-" + aln_a
             aln_b = seqB[j - 1] + aln_b
+            j = j-1
         else:
-            aln_a = seqB[i - 1] + aln_a
+            aln_a = seqA[i - 1] + aln_a
             aln_b = "-" + aln_b
-        i = i - 1
-        j = j - 1
+            i = i - 1
 
     return [aln_a, aln_b]
 
