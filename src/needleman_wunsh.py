@@ -1,5 +1,4 @@
 import numpy as np
-from enum import Enum
 
 def init(s1, s2):
     score_mtx = init_score_mtx(s1, s2)
@@ -50,7 +49,7 @@ def traceback(tabla_sol, seqA, seqB):
 
     aln_a = ""
     aln_b = ""
-    #TODO: Hay un caso que me pone _ en vez de matchear
+
     while i > 0 and j > 0:
         ma_mm = tabla_sol[i][j]
         gap_a = tabla_sol[i-1][j]
@@ -60,11 +59,11 @@ def traceback(tabla_sol, seqA, seqB):
             aln_a = seqA[i - 1] + aln_a
             aln_b = seqB[j - 1] + aln_b
         elif gap_a <= gap_b:
-            aln_a = "_" + aln_a
+            aln_a = "-" + aln_a
             aln_b = seqB[j - 1] + aln_b
         else:
             aln_a = seqB[i - 1] + aln_a
-            aln_b = "_" + aln_b
+            aln_b = "-" + aln_b
         i = i - 1
         j = j - 1
 
