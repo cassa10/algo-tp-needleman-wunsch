@@ -7,7 +7,7 @@ class Op(Enum):
     MA_MM = 3
 
 def init(s1, s2):
-    score_mtx = init_score_mtx(s1, s2)
+    score_mtx = init_score_mtx()
     gap_score = 0
     return nw(s1, s2, score_mtx, gap_score)
 
@@ -50,6 +50,7 @@ def nw(seqA_str, seqB_str, score_mtx, gap_score=0):
     return [table[row-1, col-1], table]
 
 def traceback(tabla_sol, seqA, seqB):
+    #TODO: Utilizar el enum con otra tabla para hacer el recorrido inverso)
     i = len(seqA)
     j = len(seqB)
 
@@ -77,14 +78,17 @@ def traceback(tabla_sol, seqA, seqB):
 
     return [aln_a, aln_b]
 
-def init_score_mtx(s1, s2):
-    """ example:
+def init_score_mtx():
+    """ example: MAAAAAL
     [   A   T   C    T
        A[1,  0,  0,  0],
        T[0,  1,  0,  1],
        A[1,  0,  0,  0]
     ]
     """
+    #TODO:
+    # Leer archivo de texto y llevarlo a un diccionario (MAP) en base a la tabla
+    # Combinaciones de letras (AA=5 o AC=-1 o AG=-2, AT=-3, CC=4, CG=-1, etc en cada una)
     row = len(s1)
     col = len(s2)
     matrix = np.repeat(0.0, row * col).reshape(row, col)
