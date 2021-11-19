@@ -29,23 +29,25 @@ def nw(seqA_str, seqB_str, score_mtx, gap_score=0):
        ]
     """
 
-    table[0][0] = 0.0
+    table[0][0] = gap_score
 
     for i in range(1, row):
-        table[i][0] = 0.0
+        table[i][0] = table[i-1][0] + gap_score
 
     for j in range(1, col):
-        table[0][j] = 0.0
+        table[0][j] = table[0][j-1] + gap_score
 
     for i in range(1, row):
         for j in range(1, col):
-            match_score = score_mtx[i-1][j-1]
-            if match_score > gap_score:
-                table[i][j] = table[i-1][j-1] + match_score
+            tmp_match = seqA_str[i-1] + seqB_str[j-1]
+            ma_mm_score = score_mtx[tmp_match]
+            #TODO: Corregir y agregar otra tabla para hacer traceback
+            if ma_mm_score > gap_score:
+                table[i][j] = table[i-1][j-1] + ma_mm_score
             else:
                 gap_en_a = table[i-1][j]
                 gap_en_b = table[i][j-1]
-                table[i][j] = max(gap_en_a, gap_en_b) + 0
+                table[i][j] = max(gap_en_a, gap_en_b) + gap_score
 
     return [table[row-1, col-1], table]
 
@@ -89,17 +91,24 @@ def init_score_mtx():
     #TODO:
     # Leer archivo de texto y llevarlo a un diccionario (MAP) en base a la tabla
     # Combinaciones de letras (AA=5 o AC=-1 o AG=-2, AT=-3, CC=4, CG=-1, etc en cada una)
-    row = len(s1)
-    col = len(s2)
-    matrix = np.repeat(0.0, row * col).reshape(row, col)
+    #values = ['A','C','G','T']
+    score = {
+        "AA": 1,
+        "CC": 1,
+        "GG": 1,
+        "TT": 1,
+        "AC": -2,
+        "AG": -1,
+        "AT": -4,
+        "CA": -3,
+        "CG": -5,
+        "CT": 0,
+        "GA": -1,
+        "GC": -5,
+        "GT": -3,
+        "TA": -4,
+        "TC": 0,
+        "TG": -3,
+    }
 
-    for i in range(0, row):
-        for j in range(0, col):
-            matrix[i][j] = scoreOf(s1[i], s2[j])
-    return matrix
-
-
-def scoreOf(c1, c2):
-    if c1 == c2:
-        return 1
-    return 0
+    return score
