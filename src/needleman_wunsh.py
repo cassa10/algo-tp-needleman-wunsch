@@ -1,6 +1,8 @@
 import numpy as np
 from enum import Enum
+from src.profile import Profile
 
+SCORE_MTX_FILE = "../resources/NUC.4.2"
 
 class Op(Enum):
     GAP_A = 1
@@ -18,6 +20,8 @@ def nw(seqA_str, seqB_str, score_mtx, gap_score=0):
     # _ = string vacio
     # seqA = "_CGTAA"
     # seqB = "_ATTCA"
+    alignment = None
+    profile = Profile(alignment)
     row = len(seqA_str) + 1
     col = len(seqB_str) + 1
     table = np.repeat(None, row * col).reshape(row, col)
@@ -92,26 +96,27 @@ def traceback(tabla_sol, seqA, seqB):
 
 
 def init_score_mtx():
-    # TODO:
-    #  Leer archivo de texto y llevarlo a un diccionario (MAP) en base a la tabla
-    # values = ['A','C','G','T']
     score = {
-        "AA": 1,
-        "CC": 1,
-        "GG": 1,
-        "TT": 1,
-        "AC": -2,
-        "AG": -1,
-        "AT": -4,
-        "CA": -3,
-        "CG": -5,
-        "CT": 0,
-        "GA": -1,
-        "GC": -5,
-        "GT": -3,
-        "TA": -4,
-        "TC": 0,
-        "TG": -3,
+        "AA": 1, "CC": 1, "GG": 1, "TT": 1,
+        "AC": 0, "AG": 0, "AT": 0,
+        "CA": 0, "CG": 0, "CT": 0,
+        "GA": 0, "GC": 0, "GT": 0,
+        "TA": 0, "TC": 0, "TG": 0,
     }
+    score_col_order = []
+    col_readed = False
+    for line in open(SCORE_MTX_FILE, "r"):
+        li = line.strip()
+        if not li.startswith("#"):
+            line.rstrip()
+            if not col_readed:
+                score_col_order = list(filter(lambda x: x != "", li.split(" ")))
+                col_readed = True
+            else:
+                file_scores = li.split(" ")
+                current_l = file_scores.pop(0)
+                file_scores = enumerate(list(filter(lambda x: x != "", file_scores)))
+                for i, scr_str in file_scores:
+                    score[current_l+score_col_order[i]] = int(scr_str)
 
     return score
