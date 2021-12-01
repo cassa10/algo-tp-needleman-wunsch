@@ -1,0 +1,11 @@
+#
+# This matrix was created by Jose Cassano 30/11/2021
+# Lowest score = -1, Highest score = 1
+#
+#
+
+    A   T   G   C
+A   1  -1  -1  -1
+T  -1   1  -1  -1
+G  -1  -1   1  -1
+C  -1  -1  -1   1

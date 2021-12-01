@@ -1,8 +1,8 @@
 import numpy as np
 from enum import Enum
-from src.profile import Profile
 
-SCORE_MTX_FILE = "../resources/NUC.4.2"
+from src import score_matrix
+
 
 class Op(Enum):
     GAP_A = 1
@@ -10,10 +10,12 @@ class Op(Enum):
     MA_MM = 3
 
 
-def init(s1, s2):
-    score_mtx = init_score_mtx()
+# init :: (score :: Int, table_result :: [[Int]])
+def init(s1, s2, score_matrix_file_dir=score_matrix.SCORE_MTX_FILE):
+    score_mtx = score_matrix.init(score_matrix_file_dir)
     gap_score = 0
-    return nw(s1, s2, score_mtx, gap_score)
+    result = nw(s1, s2, score_mtx, gap_score)
+    return [result[0], traceback(result[1], s1, s2)]
 
 
 def nw(seqA_str, seqB_str, score_mtx, gap_score=0):
@@ -21,7 +23,6 @@ def nw(seqA_str, seqB_str, score_mtx, gap_score=0):
     # seqA = "_CGTAA"
     # seqB = "_ATTCA"
     alignment = None
-    profile = Profile(alignment)
     row = len(seqA_str) + 1
     col = len(seqB_str) + 1
     table = np.repeat(None, row * col).reshape(row, col)
@@ -93,30 +94,3 @@ def traceback(tabla_sol, seqA, seqB):
             i = i - 1
 
     return [aln_a, aln_b]
-
-
-def init_score_mtx():
-    score = {
-        "AA": 1, "CC": 1, "GG": 1, "TT": 1,
-        "AC": 0, "AG": 0, "AT": 0,
-        "CA": 0, "CG": 0, "CT": 0,
-        "GA": 0, "GC": 0, "GT": 0,
-        "TA": 0, "TC": 0, "TG": 0,
-    }
-    score_col_order = []
-    col_readed = False
-    for line in open(SCORE_MTX_FILE, "r"):
-        li = line.strip()
-        if not li.startswith("#"):
-            line.rstrip()
-            if not col_readed:
-                score_col_order = list(filter(lambda x: x != "", li.split(" ")))
-                col_readed = True
-            else:
-                file_scores = li.split(" ")
-                current_l = file_scores.pop(0)
-                file_scores = enumerate(list(filter(lambda x: x != "", file_scores)))
-                for i, scr_str in file_scores:
-                    score[current_l+score_col_order[i]] = int(scr_str)
-
-    return score

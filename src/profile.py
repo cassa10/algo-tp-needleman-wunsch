@@ -1,5 +1,6 @@
 
 class Profile:
+
     values = {
         "A": [],
         "C": [],
@@ -10,6 +11,7 @@ class Profile:
 
     # alignment : [[Char]]
     def __init__(self, alignment):
+        self.alignment = alignment
         self.total = len(alignment)
         sumValues = {"A": 0, "C": 0, "G": 0, "T": 0}
 
