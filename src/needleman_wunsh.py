@@ -1,8 +1,6 @@
 import numpy as np
 from enum import Enum
 
-from src import score_matrix
-
 
 class Op(Enum):
     GAP_A = 1
@@ -10,32 +8,17 @@ class Op(Enum):
     MA_MM = 3
 
 
-# init :: (score :: Int, table_result :: [[Int]])
-def init(s1, s2, score_matrix_file_dir=score_matrix.SCORE_MTX_FILE):
-    score_mtx = score_matrix.init(score_matrix_file_dir)
-    gap_score = 0
-    result = nw(s1, s2, score_mtx, gap_score)
-    return [result[0], traceback(result[1], s1, s2)]
+# init :: (score :: Int,  :: alignment :: (String, String))
+def init(s1, s2, score_mtx, gap_score=0):
+    score, table_scores = nw(s1, s2, score_mtx, gap_score)
+    return score, traceback(table_scores, s1, s2)
 
 
 def nw(seqA_str, seqB_str, score_mtx, gap_score=0):
-    # _ = string vacio
-    # seqA = "_CGTAA"
-    # seqB = "_ATTCA"
-    alignment = None
     row = len(seqA_str) + 1
     col = len(seqB_str) + 1
     table = np.repeat(None, row * col).reshape(row, col)
     tb_table = np.repeat(None, row * col).reshape(row, col)
-    """ example:
-       [
-            _   A   T   C   T
-          _[0,  0,  0,  0,  0],
-          A[0,  0,  1,  0,  1],
-          T[0,  1,  0,  0,  0],
-          C[0,  1,  0,  0,  0]
-       ]
-    """
 
     table[0][0] = gap_score
 
@@ -64,7 +47,7 @@ def nw(seqA_str, seqB_str, score_mtx, gap_score=0):
                     table[i][j] = gap_en_a + gap_score
                     tb_table[i][j] = Op.GAP_A
 
-    return [table[row - 1, col - 1], tb_table]
+    return table[row - 1, col - 1], tb_table
 
 
 def traceback(tabla_sol, seqA, seqB):

@@ -1,33 +1,26 @@
 from Bio import pairwise2, SeqIO
 import needleman_wunsh
+from src.score import Score
+from src.test_util import execute_tests
 
 
-def print_test(n):
-    print(f"[Test {n}]")
-
-
-def print_test_pass(n, is_passed):
-    if is_passed:
-        print(f"[Test {n}] - PASSED")
-    else:
-        print(f"[Test {n}] - ERROR")
-    print(f"------------------------------")
-
-
-def parse_fasta_and_validate(file_dir, score_mtx_file):
+def parse_fasta(file_dir):
     f_aln = SeqIO.parse(file_dir, 'fasta')
     fas_A = next(f_aln)
     fas_B = next(f_aln)
 
     seq_A = str(fas_A.seq)
     seq_B = str(fas_B.seq)
+    return fas_A, fas_B, seq_A, seq_B
+
+
+def parse_fasta_and_validate(file_dir, score_mtx):
+    fas_A, fas_B, seq_A, seq_B = parse_fasta(file_dir)
 
     aln = pairwise2.align.globalxx(seq_A, seq_B)
     aln_score = aln[0].score
 
-    results = needleman_wunsh.init(seq_A, seq_B, score_mtx_file)
-    score = results[0]
-    alignments = results[1]
+    score, alignments = needleman_wunsh.init(seq_A, seq_B, score_mtx)
 
     alignment_seq_A = alignments[0]
     alignment_seq_B = alignments[1]
@@ -41,21 +34,26 @@ def parse_fasta_and_validate(file_dir, score_mtx_file):
     return aln_score == score
 
 
+def score_matrix(file_dir):
+    return Score(file_dir).score
+
+
 def test_1():
-    return parse_fasta_and_validate("../resources/ab.fasta", "../resources/test_nw_score_matrix")
+    return parse_fasta_and_validate("../resources/ab.fasta", score_matrix("../resources/test_nw_score_matrix"))
 
 
 def test_2():
-    return parse_fasta_and_validate("../resources/sample.fasta", "../resources/test_nw_score_matrix")
+    return parse_fasta_and_validate("../resources/sample.fasta", score_matrix("../resources/test_nw_score_matrix"))
 
 
 def test_3():
-    return parse_fasta_and_validate("../resources/ae.fasta", "../resources/test_nw_score_matrix")
+    return parse_fasta_and_validate("../resources/ae.fasta", score_matrix("../resources/test_nw_score_matrix"))
 
 
-def run():
-    tests_nw = [lambda: test_1(), lambda: test_2(), lambda: test_3()]
-    for i, test in enumerate(tests_nw):
-        n = i + 1
-        print_test(n)
-        print_test_pass(n, test())
+def run_tests():
+    execute_tests(
+        [
+            lambda: test_1(),
+            lambda: test_2(),
+            lambda: test_3()
+        ])
