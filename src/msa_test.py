@@ -50,15 +50,17 @@ def parse_fasta_and_validate(file_dir, score_mtx, gap_penalty=0):
                        nw_alignment_seq_A, nw_alignment_seq_B,
                        msa_alignment_seq_A, msa_alignment_seq_B)
 
-    return nw_score == msa_score and nw_alignment_seq_A == msa_alignment_seq_A and nw_alignment_seq_B == msa_alignment_seq_B
+    return nw_score == msa_score and \
+           nw_alignment_seq_A == msa_alignment_seq_A and \
+           nw_alignment_seq_B == msa_alignment_seq_B
 
 
 def execute_msa(file_dir, score_mtx, gap_penalty=0):
     seqs = []
     for fas in SeqIO.parse(file_dir, 'fasta'):
-        seqs.append(str(next(fas).seq))
+        seqs.append(str(fas.seq))
 
-    msa_score, msa_alignment = msa.init(seqs, score_mtx, gap_penalty)
+    msa_score, msa_alignment = msa.init(seqs.copy(), score_mtx, gap_penalty)
     print_test_results_msa(seqs, msa_score, msa_alignment)
     return True
 
@@ -88,7 +90,11 @@ def test_6():
 
 
 def test_7_msa_with_multiple_sequences():
-    return execute_msa("../resources/10.fasta", score_matrix(f"../resources/{DEFAULT_SCORE_MTX_FILE}"))
+    return execute_msa("../resources/msa_test.fasta", score_matrix(f"../resources/{DEFAULT_SCORE_MTX_FILE}"), -1)
+
+
+def test_8_msa_with_multiple_sequences():
+    return execute_msa("../resources/10.fasta", score_matrix(f"../resources/{DEFAULT_SCORE_MTX_FILE}"), -1)
 
 
 def run_tests():
@@ -99,5 +105,7 @@ def run_tests():
             lambda: test_3(),
             lambda: test_4(),
             lambda: test_5(),
-            lambda: test_6()
+            lambda: test_6(),
+            lambda: test_7_msa_with_multiple_sequences(),
+            lambda: test_8_msa_with_multiple_sequences()
         ])

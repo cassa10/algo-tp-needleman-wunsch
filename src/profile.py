@@ -33,8 +33,15 @@ class Profile:
 
     def __store_values(self, sumValues):
         for seq_key, seq_sum in sumValues.items():
-            percentage_sum = seq_sum / self.total
-            self.values[seq_key].append(percentage_sum)
+            ls = self.values[seq_key]
+            prob = seq_sum / self.total
+            self.values[seq_key] = ls + [prob]
+
+    def __store_values_reverse(self, sumValues):
+        for seq_key, seq_sum in sumValues.items():
+            ls = self.values[seq_key]
+            prob = seq_sum / self.total
+            self.values[seq_key] = [prob] + ls
 
     def score_seq(self, score_mtx, pos, seq_param):
         score_pos = 0
@@ -69,7 +76,7 @@ class Profile:
                 new_alignment[i] = current_char + new_alignment[i]
                 sumColValues[current_char] = sumColValues[current_char] + 1
 
-            self.__store_values(sumColValues)
+            self.__store_values_reverse(sumColValues)
             set_all_values(sumColValues, 0)
 
             if last_op == Op.MA_MM:
