@@ -20,7 +20,6 @@ class Profile:
     score = 0
     traceback_table = []
 
-    # seq : String (No gaps)
     def __init__(self, seq):
         self.alignment = [seq]
         self.total = len(self.alignment)
@@ -37,6 +36,7 @@ class Profile:
             prob = seq_sum / self.total
             self.values[seq_key] = ls + [prob]
 
+    # TODO: Refactor with store_values
     def __store_values_reverse(self, sumValues):
         for seq_key, seq_sum in sumValues.items():
             ls = self.values[seq_key]
