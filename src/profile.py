@@ -14,7 +14,8 @@ def set_all_values(sumValues, value):
 
 class Profile:
     alignment = []
-    values = {"-": [], "A": [], "C": [], "G": [], "T": []}
+    # TODO: Revisar porque guarda 1960 elementos en cada lista y no se reinicia el diccionario
+    values = {}
     total = 0
     gap_penalty = 0
     score = 0
@@ -24,6 +25,7 @@ class Profile:
     def __init__(self, seq):
         self.alignment = [seq]
         self.total = len(self.alignment)
+        self.values = {"-": [], "A": [], "C": [], "G": [], "T": []}
         sumValues = {"-": 0, "A": 0, "C": 0, "G": 0, "T": 0}
         for i in range(len(seq)):
             sumValues[seq[i]] = sumValues[seq[i]] + 1

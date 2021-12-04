@@ -44,7 +44,8 @@ def test_3():
 def run_tests():
     execute_tests(
         [
+            lambda: test_2(),
             lambda: test_1(),
-           # lambda: test_2(),
-            #lambda: test_3()
+
+            lambda: test_3()
         ])
