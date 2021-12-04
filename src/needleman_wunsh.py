@@ -17,10 +17,8 @@ def init(s1, s2, score_mtx, gap_score=0):
 def nw(seqA_str, seqB_str, score_mtx, gap_score=0):
     row = len(seqA_str) + 1
     col = len(seqB_str) + 1
-    table = np.repeat(None, row * col).reshape(row, col)
+    table = np.repeat(0, row * col).reshape(row, col)
     tb_table = np.repeat(None, row * col).reshape(row, col)
-
-    table[0][0] = gap_score
 
     for i in range(1, row):
         table[i][0] = table[i - 1][0] + gap_score

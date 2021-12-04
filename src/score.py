@@ -8,8 +8,6 @@ class Score:
         "CA": 0, "CG": 0, "CT": 0,
         "GA": 0, "GC": 0, "GT": 0,
         "TA": 0, "TC": 0, "TG": 0,
-        # TODO: Ver que score poner en este caso
-        "--": 1
     }
 
     def __init__(self, score_mtx_file_dir):

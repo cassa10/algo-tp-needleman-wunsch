@@ -14,7 +14,6 @@ def set_all_values(sumValues, value):
 
 class Profile:
     alignment = []
-    # TODO: Revisar porque guarda 1960 elementos en cada lista y no se reinicia el diccionario
     values = {}
     total = 0
     gap_penalty = 0
