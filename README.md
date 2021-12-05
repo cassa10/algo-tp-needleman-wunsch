@@ -1,9 +1,18 @@
 # Heuristica GRASP para MSA
 
-### Materia algoritmos - [TP Final](./TP_final_Heurstica_GRASP_para_MSA.pdf)
+### Materia algoritmos 
 
-### Notas:
+### [Trabajo Práctico: Final](./TP_final_Heurstica_GRASP_para_MSA.pdf)
+
+### Pre-requisitos:
 - Se necesita tener instalado los paquetes: numpy y biopython.
-- Ejecutar ./src/main.py para correr los tests
+
+### Notas y configuración:
 - En el folder ./src se encuentran los fuentes de la entrega.
-- En ./resources/NUC.4.2 se configura el score matrix por defecto.
+- En el folder "./resources" se deben agregar los archivos con extension fasta y score-matrix para ser leidos correctamente.
+- En el file "./src/main.py" se puede modificar el nombre del archivo deseado para leer el score-matrix en la variable "score_matrix_file", el fasta con la variable "fasta_file" y el score del gap con la variable "gap_penalty".
+- En el file "./src/main.py" se puede modificar la variable "have_run_tests" con un booleano para decidir si correr o no los tests creados.
+- En ./resources/NUC.4.2 se configura el score matrix que esta configurada por defecto.
+- En ./resources/10.fasta se configura el fasta que esta configurada por defecto.
+- Para ejecutar el algoritmo, ejecutar el main definido en "./src/main.py".
+

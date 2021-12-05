@@ -25,10 +25,10 @@ if __name__ == '__main__':
     have_run_tests = False
     exec_tests(have_run_tests)
 
-    score_matrix_file = build_dir_file("NUC.4.2")
-    fasta_file = build_dir_file("10.fasta")
+    score_matrix_file = "NUC.4.2"
+    fasta_file = "10.fasta"
     gap_penalty = -1
-    score, aln = init_msa_grasp(fasta_file, score_matrix_file, gap_penalty)
+    score, aln = init_msa_grasp(build_dir_file(fasta_file), build_dir_file(score_matrix_file), gap_penalty)
     print(score)
     for e in aln:
         print(e)
