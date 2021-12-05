@@ -91,3 +91,6 @@ class Profile:
 
     def get_chars_col(self, pos_col):
         return [self.alignment[i][pos_col] for i in range(self.total)]
+
+    def get_score_and_alignment(self):
+        return self.score, self.alignment

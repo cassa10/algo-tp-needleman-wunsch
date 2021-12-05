@@ -41,9 +41,10 @@ def parse_fasta_and_validate(file_dir, score_mtx, gap_penalty=0):
     nw_alignment_seq_A = nw_alignments.pop(0)
     nw_alignment_seq_B = nw_alignments.pop(0)
 
-    msa_score, msa_alignments = msa.init([seq_A, seq_B], score_mtx, gap_penalty)
-    msa_alignment_seq_A = msa_alignments.pop(0)
-    msa_alignment_seq_B = msa_alignments.pop(0)
+    profile_msa = msa.init([seq_A, seq_B], score_mtx, gap_penalty)
+    msa_score, msa_alignment = profile_msa.get_score_and_alignment()
+    msa_alignment_seq_A = msa_alignment.pop(0)
+    msa_alignment_seq_B = msa_alignment.pop(0)
 
     print_test_results(seq_A, seq_B, nw_score, msa_score,
                        nw_alignment_seq_A, nw_alignment_seq_B,
@@ -57,7 +58,8 @@ def parse_fasta_and_validate(file_dir, score_mtx, gap_penalty=0):
 def execute_msa(file_dir, score_mtx, gap_penalty=0):
     seqs = fasta_multiple_seqs(file_dir)
 
-    msa_score, msa_alignment = msa.init(seqs.copy(), score_mtx, gap_penalty)
+    profile_msa = msa.init(seqs.copy(), score_mtx, gap_penalty)
+    msa_score, msa_alignment = profile_msa.get_score_and_alignment()
     print_test_results_msa(seqs, msa_score, msa_alignment)
     return True
 
