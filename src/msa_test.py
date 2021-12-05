@@ -1,7 +1,5 @@
-from Bio import SeqIO
-
 from src import needleman_wunsh, msa
-from src.needleman_wunsh_test import score_matrix
+from src.file_parser import fasta_multiple_seqs, score_matrix
 from src.test_util import execute_tests
 
 DEFAULT_SCORE_MTX_FILE = "NUC.4.2"
@@ -34,15 +32,8 @@ def print_test_results_msa(seqs, score, alignment):
     print("Asserting if msa do not raise exception")
 
 
-def parse_fasta_multiple_seqs(file_dir):
-    seqs = []
-    for fas in SeqIO.parse(file_dir, 'fasta'):
-        seqs.append(str(fas.seq))
-    return seqs
-
-
 def parse_fasta_and_validate(file_dir, score_mtx, gap_penalty=0):
-    seqs = parse_fasta_multiple_seqs(file_dir)
+    seqs = fasta_multiple_seqs(file_dir)
 
     seq_A = seqs.pop(0)
     seq_B = seqs.pop(0)
@@ -64,7 +55,7 @@ def parse_fasta_and_validate(file_dir, score_mtx, gap_penalty=0):
 
 
 def execute_msa(file_dir, score_mtx, gap_penalty=0):
-    seqs = parse_fasta_multiple_seqs(file_dir)
+    seqs = fasta_multiple_seqs(file_dir)
 
     msa_score, msa_alignment = msa.init(seqs.copy(), score_mtx, gap_penalty)
     print_test_results_msa(seqs, msa_score, msa_alignment)
@@ -116,8 +107,14 @@ def test_8_msa_with_multiple_sequences():
                        -1)
 
 
+def test_9_msa_with_multiple_sequences():
+    return execute_msa("../resources/msa_test_2.fasta",
+                       score_matrix(f"../resources/{DEFAULT_SCORE_MTX_FILE}"),
+                       -1)
+
+
 def run_tests():
-    execute_tests(
+    passed = execute_tests(
         [
             lambda: test_1(),
             lambda: test_2(),
@@ -126,5 +123,7 @@ def run_tests():
             lambda: test_5(),
             lambda: test_6(),
             lambda: test_7_msa_with_multiple_sequences(),
-            lambda: test_8_msa_with_multiple_sequences()
-        ])
+            lambda: test_8_msa_with_multiple_sequences(),
+            lambda: test_9_msa_with_multiple_sequences()
+        ], "---- [ TESTS MSA ] ----")
+    return passed

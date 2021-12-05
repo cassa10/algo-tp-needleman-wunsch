@@ -1,6 +1,3 @@
-SCORE_MTX_FILE = "../resources/NUC.4.2"
-
-
 class Score:
     score = {
         "AA": 1, "CC": 1, "GG": 1, "TT": 1,

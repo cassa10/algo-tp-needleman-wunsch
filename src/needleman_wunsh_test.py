@@ -1,21 +1,11 @@
-from Bio import pairwise2, SeqIO
+from Bio import pairwise2
 import needleman_wunsh
-from src.score import Score
+from src.file_parser import fasta_first_two_seq, score_matrix
 from src.test_util import execute_tests
 
 
-def parse_fasta(file_dir):
-    f_aln = SeqIO.parse(file_dir, 'fasta')
-    fas_A = next(f_aln)
-    fas_B = next(f_aln)
-
-    seq_A = str(fas_A.seq)
-    seq_B = str(fas_B.seq)
-    return fas_A, fas_B, seq_A, seq_B
-
-
 def parse_fasta_and_validate(file_dir, score_mtx):
-    fas_A, fas_B, seq_A, seq_B = parse_fasta(file_dir)
+    fas_A, fas_B, seq_A, seq_B = fasta_first_two_seq(file_dir)
 
     aln = pairwise2.align.globalxx(seq_A, seq_B)
     aln_score = aln[0].score
@@ -34,10 +24,6 @@ def parse_fasta_and_validate(file_dir, score_mtx):
     return aln_score == score
 
 
-def score_matrix(file_dir):
-    return Score(file_dir).score
-
-
 def test_1():
     return parse_fasta_and_validate("../resources/ab.fasta", score_matrix("../resources/test_nw_score_matrix"))
 
@@ -51,9 +37,10 @@ def test_3():
 
 
 def run_tests():
-    execute_tests(
+    passed = execute_tests(
         [
             lambda: test_1(),
             lambda: test_2(),
             lambda: test_3()
-        ])
+        ], "---- [ TESTS Needleman Wunsh ] ----")
+    return passed

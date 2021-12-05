@@ -17,8 +17,9 @@ def print_test_all_passed(is_all_passed):
         print("ERROR - No all tests passed")
 
 
-def execute_tests(tests):
+def execute_tests(tests, test_label="---- [ TESTS SUIT ] ----"):
     all_passed = True
+    print(test_label)
     for i, test in enumerate(tests):
         n = i + 1
         print_test(n)
@@ -26,3 +27,5 @@ def execute_tests(tests):
         all_passed = all_passed and passed
         print_test_pass(n, passed)
     print_test_all_passed(all_passed)
+    print(test_label + "\n")
+    return all_passed
