@@ -1,5 +1,5 @@
 import numpy as np
-
+import copy
 from src.msa_op import Op
 
 
@@ -29,6 +29,9 @@ class Profile:
             sumValues[seq[i]] = sumValues[seq[i]] + 1
             self.__store_values(sumValues)
             set_all_values(sumValues, 0)
+
+    def copy(self):
+        return copy.deepcopy(self)
 
     def __store_values(self, sumValues):
         for seq_key, seq_sum in sumValues.items():

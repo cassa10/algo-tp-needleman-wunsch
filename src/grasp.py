@@ -1,60 +1,71 @@
 from random import randint
-from numpy import ceil
+from numpy import ceil, log2
 from src import msa
+from src.possibility_result import PossibilityResult
 from src.profile import Profile
 
 
 def init(seqs, score_mtx, gap_penalty):
     if len(seqs) <= 1:
         return seqs
-    n_iteration = get_iterations(seqs)
+
     results = []
+    n_iteration = get_iterations(seqs)
+    select_best_in_greedy = 5
     while n_iteration > 0:
         # greedy solution
-        greedy_sol = do_greedy_heuristic(seqs, score_mtx, gap_penalty)
-
-        result = do_local_heuristic(greedy_sol, score_mtx, gap_penalty)
-        results.append(result)
+        greedy_sol = do_greedy_heuristic(seqs, score_mtx, gap_penalty, select_best_in_greedy)
+        print(f"{n_iteration}-greedy-score: {greedy_sol.score}")
+        #result = do_local_heuristic(greedy_sol, score_mtx, gap_penalty)
+        #results.append(result)
+        results.append(greedy_sol)
         n_iteration -= 1
 
     return results
 
 
-def do_greedy_heuristic(seqs, score_mtx, gap_penalty):
-    select_best = 3
+def do_greedy_heuristic(seqs, score_mtx, gap_penalty, select_best):
     possibilities = []
 
     for i1, seq_a in enumerate(seqs):
-        seqs.pop(i1)
         for i2, seq_b in enumerate(seqs):
-            possibilities.append((i1, i2, msa.nw_with_profile(Profile(seq_a), seq_b, score_mtx, gap_penalty)))
-        seqs.insert(i1, seq_a)
+            if i1 != i2:
+                possibilities.append(
+                    PossibilityResult(msa.nw_with_profile(Profile(seq_a), seq_b, score_mtx, gap_penalty), i2, i1)
+                )
 
-    possibilities.sort(key=lambda i_seq_fst, i_seq_snd, prof_res: prof_res.score)
+    seqs, profile_result = select_possibility(seqs, possibilities, select_best)
+
+    while len(seqs) > 0:
+        possibilities = []
+        for i, seq in enumerate(seqs):
+            possibilities.append(
+                PossibilityResult(msa.nw_with_profile(profile_result.copy(), seq, score_mtx, gap_penalty), i)
+            )
+        seqs, profile_result = select_possibility(seqs, possibilities, select_best)
+
+    return profile_result
+
+
+def select_possibility(seqs, possibilities, select_best):
+
+    possibilities.sort(key=lambda possibility_res: possibility_res.score(), reverse=True)
     select_top = select_best
     if len(possibilities) < select_best:
         select_top = len(possibilities)
 
     top_poss = possibilities[:select_top]
-    # Random greedy
-    selector = randint(0, select_top - 1)
-    index_seq_fst, index_seq_snd, profile_result = top_poss[selector]
+    # Random
+    selector = randint(0, select_top-1)
+    selected_poss_res = top_poss[selector]
 
-    seqs = [seq for i, seq in enumerate(seqs) if i != index_seq_fst and i != index_seq_snd]
+    seqs = [seq for i, seq in enumerate(seqs) if selected_poss_res.not_contain_index(i)]
 
-    if len(seqs) == 0:
-        return profile_result
-    if len(seqs) == 1:
-        return msa.nw_with_profile(profile_result, seqs.pop(0), score_mtx, gap_penalty)
-
-    # TODO: VOLVER A ITERAR
-
-    result = None
-    return result
+    return seqs, selected_poss_res.profile_result
 
 
 def get_iterations(seqs):
-    return ceil(len(seqs) * 2 / 1.6)
+    return int(ceil(log2(len(seqs)) * 2.33))
 
 
 def do_local_heuristic(solution, score_mtx, gap_penalty):

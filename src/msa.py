@@ -14,12 +14,12 @@ def init(sequences, score_mtx, gap_penalty=0):
 def dummy_strategy(sequences, score_mtx, gap_penalty):
     seq_fst = sequences.pop(0)
     profile = Profile(seq_fst)
-    # Mutates profile for each iteration
     for seq in sequences:
         nw_with_profile(profile, seq, score_mtx, gap_penalty)
     return profile
 
 
+# Mutates profile
 def nw_with_profile(profile, seq, score_mtx, gap_penalty):
     lenS = len(seq) + 1
     lenP = profile.length() + 1
@@ -56,6 +56,7 @@ def nw_with_profile(profile, seq, score_mtx, gap_penalty):
 
     profile.score = table[lenS - 1][lenP - 1]
     profile.do_traceback(lenS - 1, lenP - 1)
+    return profile
 
 
 def get_score_probs(score_mtx, gap_penalty, char, probs):
