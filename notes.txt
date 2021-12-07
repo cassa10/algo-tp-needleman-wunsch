@@ -2,10 +2,6 @@
     str_a = TATA
     str_b = TCT
 
-    1) AGREGAR GAP  // SCORE = 0 
-    3) MISMATCH     // SCORE = -1
-    4) MATCH        // SCORE = 1
-
     BOTTOM-UP es el algo:
     
     Memoizacion Matrix:

@@ -5,7 +5,7 @@
 ### [Trabajo Práctico: Final](./TP_final_Heurstica_GRASP_para_MSA.pdf)
 
 ### Pre-requisitos:
-- Se necesita tener instalado los paquetes: numpy y biopython.
+- Se necesita tener instalado los paquetes: numpy, matplotlib y biopython.
 
 ### Notas y configuración:
 - En el folder ./src se encuentran los fuentes de la entrega.
@@ -15,4 +15,5 @@
 - En ./resources/NUC.4.2 se configura el score matrix que esta configurada por defecto.
 - En ./resources/10.fasta se configura el fasta que esta configurada por defecto.
 - Para ejecutar el algoritmo, ejecutar el main definido en "./src/main.py".
+- En el folder "./output" se va a imprimir el output del main, los cuales son el gráfico (.png) y el alineamiento resultante (.txt).
 
