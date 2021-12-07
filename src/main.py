@@ -1,16 +1,20 @@
 import datetime
 
 from src import tests, file_parser, grasp, msa
-from src.chart import bar_chart
+from src.output import bar_chart, print_aln
 
 RESOURCES_DIR = "../resources"
 OUTPUT_DIR = "../output"
 
 
-def print_aln_as_output(alignment, fullpath_file):
-    with open(fullpath_file, 'w') as f:
-        for seq in alignment:
-            f.write(f"{seq}\n")
+def make_output_files(results):
+    bar_chart("GRASP results", "iterations", "scores",
+              map(lambda profile: profile.score, results),
+              f"{OUTPUT_DIR}/chart_results-{time}.png",
+              save_chart_out_file)
+    if save_aln_out_file:
+        # TODO: Use all results or last?
+        print_aln(results[-1].alignment, f"{OUTPUT_DIR}/alignment-{time}.txt")
 
 
 def init_msa_grasp(file_dir_fasta, file_dir_score_matrix, _gap_penalty):
@@ -22,14 +26,10 @@ def init_msa_grasp(file_dir_fasta, file_dir_score_matrix, _gap_penalty):
     print(f"msa dummy score: {dummy_score.score}")
 
     results = grasp.init(seqs.copy(), score_mtx, _gap_penalty)
-
-    bar_chart("GRASP results", "iterations", "scores",
-              map(lambda profile: profile.score, results),
-              f"{OUTPUT_DIR}/chart_results-{time}.png",
-              save_chart_out_file)
-    # TODO: Crear archivo que tenga los alineamientos del resultado final.
-    if save_aln_out_file:
-        print_aln_as_output(results, f"{OUTPUT_DIR}/alignment-{time}.txt")
+    if len(results) > 0:
+        for s in results[-1].alignment:
+            print(s)
+        make_output_files(results)
 
 
 def build_dir_file(file_name):
