@@ -7,7 +7,7 @@ def print_aln(alignment, fullpath_file):
             f.write(f"{seq}\n")
 
 
-# data : [(n_iteration : int, score : Int )]
+# data : [(n_iteration : Int, score : Int )]
 def bar_chart(title, x_label, y_label, scores, fullpath_file, save_file=False):
     bar_width = 0.35
     fig, ax = plt.subplots()

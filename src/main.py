@@ -1,20 +1,9 @@
 import datetime
-
 from src import tests, file_parser, grasp, msa
 from src.output import bar_chart, print_aln
 
 RESOURCES_DIR = "../resources"
 OUTPUT_DIR = "../output"
-
-
-def make_output_files(results):
-    bar_chart("GRASP results", "iterations", "scores",
-              map(lambda profile: profile.score, results),
-              f"{OUTPUT_DIR}/chart_results-{time}.png",
-              save_chart_out_file)
-    if save_aln_out_file:
-        # TODO: Use all results or last?
-        print_aln(results[-1].alignment, f"{OUTPUT_DIR}/alignment-{time}.txt")
 
 
 def init_msa_grasp(file_dir_fasta, file_dir_score_matrix, _gap_penalty):
@@ -32,8 +21,22 @@ def init_msa_grasp(file_dir_fasta, file_dir_score_matrix, _gap_penalty):
         make_output_files(results)
 
 
-def build_dir_file(file_name):
+def make_output_files(results):
+    bar_chart("GRASP results", "iterations", "scores",
+              [profile.score for profile in results],
+              build_output_dir_file(chart_out_file),
+              save_chart_out_file)
+    if save_aln_out_file:
+        # TODO: Use all results or last?
+        print_aln(results[-1].alignment, build_output_dir_file(aln_out_file))
+
+
+def build_resource_dir_file(file_name):
     return f"{RESOURCES_DIR}/{file_name}"
+
+
+def build_output_dir_file(file_name):
+    return f"{OUTPUT_DIR}/{file_name}"
 
 
 def exec_tests():
@@ -46,6 +49,8 @@ def exec_tests():
 
 if __name__ == '__main__':
     time = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+    aln_out_file = f"alignment-{time}.txt"
+    chart_out_file = f"chart_results-{time}.png"
     # TODO: Make vars configurable with script params
     have_run_tests = False
     save_chart_out_file = True
@@ -56,8 +61,9 @@ if __name__ == '__main__':
 
     exec_tests()
 
-    # print_aln_as_output(["AGT","-G-","--T","-GT","A-T"], f"{OUTPUT_DIR}/alignment-{time}.txt") bar_chart("GRASP
-    # results", "iterations", "scores", [390, 430, 483, 655], f"{OUTPUT_DIR}/chart_results-{time}.png",
+    # print_aln(["AGT","-G-","--T","-GT","A-T"], build_output_dir_file("alignment-{time}.txt"))
+    # bar_chart("GRASP results", "iterations", "scores", [390, 430, 483, 655],
+    # build_output_dir_file("chart_results-{time}.png"),
     # save_chart_out_file)
 
-    init_msa_grasp(build_dir_file(fasta_file), build_dir_file(score_matrix_file), gap_penalty)
+    init_msa_grasp(build_resource_dir_file(fasta_file), build_resource_dir_file(score_matrix_file), gap_penalty)
