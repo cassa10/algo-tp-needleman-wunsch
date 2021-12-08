@@ -1,6 +1,7 @@
 import numpy as np
 import copy
 from src.msa_op import Op
+from src.solution import Solution
 
 
 def increment_value(sumValues, incValue):
@@ -97,3 +98,6 @@ class Profile:
 
     def get_score_and_alignment(self):
         return self.score, self.alignment
+
+    def map_to_solution(self):
+        return Solution(self.score, self.alignment)

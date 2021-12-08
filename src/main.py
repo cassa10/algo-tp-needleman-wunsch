@@ -1,4 +1,5 @@
 import datetime
+import time
 from src import tests, file_parser, grasp, msa
 from src.output import bar_chart, print_aln
 
@@ -22,8 +23,8 @@ def init_msa_grasp(file_dir_fasta, file_dir_score_matrix, _gap_penalty):
 
 
 def make_output_files(results):
-    bar_chart("GRASP results", "iterations", "scores",
-              [profile.score for profile in results],
+    bar_chart("GRASP results", "iteration", "score",
+              [sol.score for sol in results],
               build_output_dir_file(chart_out_file),
               save_chart_out_file)
     if save_aln_out_file:
@@ -48,9 +49,9 @@ def exec_tests():
 
 
 if __name__ == '__main__':
-    time = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-    aln_out_file = f"alignment-{time}.txt"
-    chart_out_file = f"chart_results-{time}.png"
+    cur_datetime = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+    aln_out_file = f"alignment-{cur_datetime}.txt"
+    chart_out_file = f"chart_results-{cur_datetime}.png"
     # TODO: Make vars configurable with script params
     have_run_tests = False
     save_chart_out_file = True
@@ -61,9 +62,6 @@ if __name__ == '__main__':
 
     exec_tests()
 
-    # print_aln(["AGT","-G-","--T","-GT","A-T"], build_output_dir_file("alignment-{time}.txt"))
-    # bar_chart("GRASP results", "iterations", "scores", [390, 430, 483, 655],
-    # build_output_dir_file("chart_results-{time}.png"),
-    # save_chart_out_file)
-
+    start_time = time.time()
     init_msa_grasp(build_resource_dir_file(fasta_file), build_resource_dir_file(score_matrix_file), gap_penalty)
+    print(f"Finish MSA GRASP in {time.time() - start_time} seconds")
