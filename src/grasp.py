@@ -8,18 +8,23 @@ from src.solution import Solution
 
 def init(seqs, score_mtx, gap_penalty):
     if len(seqs) <= 1:
-        return seqs
+        return [Solution(0, seqs)]
 
-    results = []
     n_iteration = get_iterations(seqs)
     select_best_in_greedy = 5
+    results = []
+    iteration_result = []
     while n_iteration > 0:
         # greedy solution
         greedy_sol = do_greedy_heuristic(seqs, score_mtx, gap_penalty, select_best_in_greedy)
         print(f"DEBUG - #{n_iteration}-greedy-score: {greedy_sol.score}")
+        iteration_result.append(greedy_sol)
         # local solution
-        result = do_local_heuristic(greedy_sol, score_mtx, gap_penalty)
-        results.append(result)
+        termination_criteria = 8
+        local_sol = do_local_heuristic(iteration_result, greedy_sol, score_mtx, gap_penalty, termination_criteria)
+        print(f"DEBUG - #{n_iteration}-best-local-score: {local_sol.score}")
+        results.append(iteration_result)
+        iteration_result = []
         n_iteration -= 1
 
     return results
@@ -27,7 +32,6 @@ def init(seqs, score_mtx, gap_penalty):
 
 def do_greedy_heuristic(seqs, score_mtx, gap_penalty, select_best):
     possibilities = []
-
     for i1, seq_a in enumerate(seqs):
         for i2, seq_b in enumerate(seqs):
             if i1 != i2:
@@ -65,26 +69,51 @@ def select_possibility(seqs, possibilities, select_best):
 
 
 def get_iterations(seqs):
-    return int(ceil(log2(len(seqs)) * 2.33))
+    return int(ceil(log2(len(seqs)) * 1.33))
 
 
-def do_local_heuristic(solution, score_mtx, gap_penalty):
-    last_score = 0
-    current_solution = solution
-    while last_score < current_solution.score:
-        last_score = current_solution.score
-        index_cols, aln = get_neighbor_aln(current_solution)
-        current_solution = get_neighbor_solution(current_solution, index_cols, aln, score_mtx, gap_penalty)
-    return current_solution
+def do_local_heuristic(iteration_res, solution, score_mtx, gap_penalty, termination_criteria):
+    best_solution = solution
+    n_iterations = termination_criteria
+    while 0 < n_iterations:
+        index_cols, aln = get_neighbor_aln(best_solution)
+        current_solution = get_neighbor_solution(best_solution, index_cols, aln, score_mtx, gap_penalty)
+
+        if best_solution.score < current_solution.score:
+            iteration_res.append(current_solution)
+            best_solution = current_solution
+
+        n_iterations -= 1
+    return best_solution
 
 
+# Neighbor solution - Switch nucleotide with gap, eg: (-X) => (X-) where X in [A,C,G,T]
 def get_neighbor_aln(solution):
-    index_cols = []
     neighbor_aln = solution.get_immutable_aln()
+    # Use random because always return same solution in case of return a bad solution
+    seq_selector = randint(0, len(neighbor_aln) - 1)
 
-    # TODO: make neighbor solution
+    seq_selected = neighbor_aln[seq_selector]
 
-    return index_cols, neighbor_aln
+    prev_gap = False
+    prev_gap_col = 0
+    nuc_col = 0
+    nuc = ''
+
+    for i, c in enumerate(seq_selected):
+        if c == '-':
+            prev_gap = True
+            prev_gap_col = i
+
+        if prev_gap and c != '-':
+            nuc_col = i
+            nuc = c
+            break
+
+    seq = neighbor_aln[seq_selector]
+    new_seq = seq[:prev_gap_col-1] + nuc + '-' + seq[nuc_col+1:]
+    neighbor_aln[seq_selector] = new_seq
+    return [prev_gap_col, nuc_col], neighbor_aln
 
 
 def get_neighbor_solution(solution, index_cols, aln, score_mtx, gap_penalty):
@@ -102,3 +131,4 @@ def calculate_col_score(aln, index_col, score_mtx, gap_penalty):
         for i2, s2 in enumerate(aln):
             if i1 != i2:
                 acc += msa.get_score(score_mtx, gap_penalty, s1[index_col], s2[index_col])
+    return acc

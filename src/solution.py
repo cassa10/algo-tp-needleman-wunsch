@@ -1,3 +1,6 @@
+import copy
+
+
 class Solution:
     score = 0
     alignment = []
@@ -8,3 +11,6 @@ class Solution:
 
     def get_immutable_aln(self):
         return self.alignment.copy()
+
+    def copy(self):
+        return copy.deepcopy(self)
