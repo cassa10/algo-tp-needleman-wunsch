@@ -1,9 +1,8 @@
 import datetime
 import time
 
-from src import tests, file_parser, grasp, msa
+from src import tests, file_parser, grasp
 from src.output import bar_chart, print_aln
-from src.solution import Solution
 
 RESOURCES_DIR = "../resources"
 OUTPUT_DIR = "../output"
