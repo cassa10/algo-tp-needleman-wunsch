@@ -18,9 +18,15 @@
 - En el folder "./output" se va a imprimir el output del main, los cuales son el gráfico (.png) y el alineamiento resultante (.txt).
 
 
-### Ejemplo de output:
+### Ejemplo input:
 
-- [GRASP alignment file](./alignment-2021-12-09_09-10-22.txt)
+- [Sequences to align](./resources/10.fasta)
 
-- [GRASP chart](./chart_results-2021-12-09_09-10-22.png)
+- [Score Matrix](./resources/NUC.4.2)
+
+### Ejemplo output:
+
+- [GRASP output alignment file](./alignment-2021-12-09_09-10-22.txt)
+
+- ![GRASP output chart](./chart_results-2021-12-09_09-10-22.png)
 
