@@ -16,7 +16,7 @@ def bar_chart(title, x_label, y_label, results, fullpath_file, save_file=False):
 
     for i, result in enumerate(results):
         scores = [s.score for s in result]
-        plt.plot(list(range(0, len(result))), scores, marker='o', label=f"GRASP {i}")
+        plt.plot(list(range(0, len(result))), scores, label=f"GRASP {i}")
 
     plt.legend()
     if save_file:

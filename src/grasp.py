@@ -20,7 +20,7 @@ def init(seqs, score_mtx, gap_penalty):
         print(f"DEBUG - #{n_iteration}-greedy-score: {greedy_sol.score}")
         iteration_result.append(greedy_sol)
         # local solution
-        termination_criteria = 30
+        termination_criteria = 100
         local_sol = do_local_heuristic(iteration_result, greedy_sol, score_mtx, gap_penalty, termination_criteria)
         print(f"DEBUG - #{n_iteration}-best-local-score: {local_sol.score}")
         results.append(iteration_result)
@@ -80,9 +80,9 @@ def do_local_heuristic(iteration_res, solution, score_mtx, gap_penalty, terminat
         current_solution = get_neighbor_solution(best_solution, index_cols, aln, score_mtx, gap_penalty)
 
         if best_solution.score < current_solution.score:
-            iteration_res.append(current_solution)
             best_solution = current_solution
 
+        iteration_res.append(best_solution)
         n_iterations -= 1
     return best_solution
 

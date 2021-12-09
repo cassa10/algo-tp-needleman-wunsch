@@ -20,7 +20,7 @@
 
 ### Ejemplo de output:
 
-- [GRASP alignment file](./alignment-2021-12-09_01-36-50.txt)
+- [GRASP alignment file](./alignment-2021-12-09_01-46-18.txt)
 
-- [GRASP chart](./chart_results-2021-12-09_01-36-50.png)
+- [GRASP chart](./chart_results-2021-12-09_01-46-18.png)
 
