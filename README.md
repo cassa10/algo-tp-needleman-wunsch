@@ -17,3 +17,10 @@
 - Para ejecutar el algoritmo, ejecutar el main definido en "./src/main.py".
 - En el folder "./output" se va a imprimir el output del main, los cuales son el gráfico (.png) y el alineamiento resultante (.txt).
 
+
+### Ejemplo de output:
+
+- [GRASP alignment file](./alignment-2021-12-09_01-36-50.txt)
+
+- [GRASP chart](./chart_results-2021-12-09_01-36-50.png)
+

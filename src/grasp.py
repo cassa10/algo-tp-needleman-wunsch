@@ -20,7 +20,7 @@ def init(seqs, score_mtx, gap_penalty):
         print(f"DEBUG - #{n_iteration}-greedy-score: {greedy_sol.score}")
         iteration_result.append(greedy_sol)
         # local solution
-        termination_criteria = 8
+        termination_criteria = 30
         local_sol = do_local_heuristic(iteration_result, greedy_sol, score_mtx, gap_penalty, termination_criteria)
         print(f"DEBUG - #{n_iteration}-best-local-score: {local_sol.score}")
         results.append(iteration_result)
@@ -95,25 +95,30 @@ def get_neighbor_aln(solution):
 
     seq_selected = neighbor_aln[seq_selector]
 
-    prev_gap = False
-    prev_gap_col = 0
-    nuc_col = 0
-    nuc = ''
+    prev_nuc = False
+    prev_nuc_col = 0
+    gap_col = 0
+    nuc = ""
 
-    for i, c in enumerate(seq_selected):
-        if c == '-':
-            prev_gap = True
-            prev_gap_col = i
+    select_start_col = randint(0, int(len(seq_selected) * 0.75))
+    for i, c in enumerate(seq_selected[select_start_col:]):
+        if c != "-":
+            prev_nuc = True
+            prev_nuc_col = select_start_col + i
 
-        if prev_gap and c != '-':
-            nuc_col = i
+        if prev_nuc and c == "-":
+            gap_col = select_start_col + i
             nuc = c
             break
 
+    # Not found swap
+    if prev_nuc_col == 0 and gap_col == 0:
+        return [], neighbor_aln
+
     seq = neighbor_aln[seq_selector]
-    new_seq = seq[:prev_gap_col-1] + nuc + '-' + seq[nuc_col+1:]
+    new_seq = seq[:prev_nuc_col] + "-" + nuc + seq[gap_col+1:]
     neighbor_aln[seq_selector] = new_seq
-    return [prev_gap_col, nuc_col], neighbor_aln
+    return [prev_nuc_col, gap_col], neighbor_aln
 
 
 def get_neighbor_solution(solution, index_cols, aln, score_mtx, gap_penalty):

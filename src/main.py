@@ -17,7 +17,7 @@ def init_msa_grasp(file_dir_fasta, file_dir_score_matrix, _gap_penalty):
 
 
 def make_output_files(results):
-    bar_chart("GRASP results", "# de iterations of local search", "score",
+    bar_chart("GRASP results", "# de iterations of success local search", "score",
               results,
               build_output_dir_file(chart_out_file),
               save_chart_out_file)
