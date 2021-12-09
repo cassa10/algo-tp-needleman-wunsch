@@ -28,5 +28,7 @@
 
 - [GRASP output alignment file](./alignment-2021-12-09_09-10-22.txt)
 
-- ![GRASP output chart](./chart_results-2021-12-09_09-10-22.png)
+- GRASP output chart:
+
+![GRASP output chart](./chart_results-2021-12-09_09-10-22.png)
 
