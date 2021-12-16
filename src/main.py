@@ -1,11 +1,12 @@
 import datetime
 import time
+import file_parser
+import grasp
+import tests
+from output import bar_chart, print_aln
 
-from src import tests, file_parser, grasp
-from src.output import bar_chart, print_aln
-
-RESOURCES_DIR = "../resources"
-OUTPUT_DIR = "../output"
+RESOURCES_DIR = "./resources"
+OUTPUT_DIR = "./output"
 
 
 def init_msa_grasp(file_dir_fasta, file_dir_score_matrix, _gap_penalty):
@@ -55,13 +56,13 @@ if __name__ == '__main__':
     aln_out_file = f"alignment-{cur_datetime}.txt"
     chart_out_file = f"chart_results-{cur_datetime}.png"
     # TODO: Make vars configurable with script params
-    have_run_tests = False
     save_chart_out_file = True
     save_aln_out_file = True
     score_matrix_file = "NUC.4.2"
     fasta_file = "10.fasta"
     gap_penalty = -1
 
+    have_run_tests = False
     exec_tests()
 
     start_time = time.time()

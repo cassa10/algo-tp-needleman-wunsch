@@ -1,9 +1,9 @@
 from random import randint
 from numpy import ceil, log2
-from src import msa
-from src.possibility_result import PossibilityResult
-from src.profile import Profile
-from src.solution import Solution
+import msa
+from possibility_result import PossibilityResult
+from profile import Profile
+from solution import Solution
 
 
 def init(seqs, score_mtx, gap_penalty):

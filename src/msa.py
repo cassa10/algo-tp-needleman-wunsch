@@ -1,7 +1,6 @@
 import numpy as np
-
-from src.msa_op import Op
-from src.profile import Profile
+from msa_op import Op
+from profile import Profile
 
 
 # TODO: Refactor with strategy pattern

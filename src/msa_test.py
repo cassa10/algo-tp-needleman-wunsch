@@ -1,7 +1,9 @@
-from src import needleman_wunsh, msa
-from src.file_parser import fasta_multiple_seqs, score_matrix
-from src.test_util import execute_tests
+import msa
+import needleman_wunsh
+from file_parser import fasta_multiple_seqs, score_matrix
+from test_util import execute_tests
 
+RESOURCES_FOLDER = "./resources"
 DEFAULT_SCORE_MTX_FILE = "NUC.4.2"
 
 
@@ -65,53 +67,53 @@ def execute_msa(file_dir, score_mtx, gap_penalty=0):
 
 
 def test_1():
-    return parse_fasta_and_validate("../resources/ab.fasta",
-                                    score_matrix(f"../resources/{DEFAULT_SCORE_MTX_FILE}"))
+    return parse_fasta_and_validate(f"{RESOURCES_FOLDER}/ab.fasta",
+                                    score_matrix(f"{RESOURCES_FOLDER}/{DEFAULT_SCORE_MTX_FILE}"))
 
 
 def test_2():
-    return parse_fasta_and_validate("../resources/sample.fasta",
-                                    score_matrix(f"../resources/{DEFAULT_SCORE_MTX_FILE}"))
+    return parse_fasta_and_validate(f"{RESOURCES_FOLDER}/sample.fasta",
+                                    score_matrix(f"{RESOURCES_FOLDER}/{DEFAULT_SCORE_MTX_FILE}"))
 
 
 def test_3():
-    return parse_fasta_and_validate("../resources/ae.fasta",
-                                    score_matrix(f"../resources/{DEFAULT_SCORE_MTX_FILE}"))
+    return parse_fasta_and_validate(f"{RESOURCES_FOLDER}/ae.fasta",
+                                    score_matrix(f"{RESOURCES_FOLDER}/{DEFAULT_SCORE_MTX_FILE}"))
 
 
 def test_4():
-    return parse_fasta_and_validate("../resources/ab.fasta",
-                                    score_matrix(f"../resources/{DEFAULT_SCORE_MTX_FILE}"),
+    return parse_fasta_and_validate(f"{RESOURCES_FOLDER}/ab.fasta",
+                                    score_matrix(f"{RESOURCES_FOLDER}/{DEFAULT_SCORE_MTX_FILE}"),
                                     -1)
 
 
 def test_5():
-    return parse_fasta_and_validate("../resources/sample.fasta",
-                                    score_matrix(f"../resources/{DEFAULT_SCORE_MTX_FILE}"),
+    return parse_fasta_and_validate(f"{RESOURCES_FOLDER}/sample.fasta",
+                                    score_matrix(f"{RESOURCES_FOLDER}/{DEFAULT_SCORE_MTX_FILE}"),
                                     -1)
 
 
 def test_6():
-    return parse_fasta_and_validate("../resources/ae.fasta",
-                                    score_matrix(f"../resources/{DEFAULT_SCORE_MTX_FILE}"),
+    return parse_fasta_and_validate(f"{RESOURCES_FOLDER}/ae.fasta",
+                                    score_matrix(f"{RESOURCES_FOLDER}/{DEFAULT_SCORE_MTX_FILE}"),
                                     -1)
 
 
 def test_7_msa_with_multiple_sequences():
-    return execute_msa("../resources/msa_test.fasta",
-                       score_matrix(f"../resources/{DEFAULT_SCORE_MTX_FILE}"),
+    return execute_msa(f"{RESOURCES_FOLDER}/msa_test.fasta",
+                       score_matrix(f"{RESOURCES_FOLDER}/{DEFAULT_SCORE_MTX_FILE}"),
                        -1)
 
 
 def test_8_msa_with_multiple_sequences():
-    return execute_msa("../resources/10.fasta",
-                       score_matrix(f"../resources/{DEFAULT_SCORE_MTX_FILE}"),
+    return execute_msa(f"{RESOURCES_FOLDER}/10.fasta",
+                       score_matrix(f"{RESOURCES_FOLDER}/{DEFAULT_SCORE_MTX_FILE}"),
                        -1)
 
 
 def test_9_msa_with_multiple_sequences():
-    return execute_msa("../resources/msa_test_2.fasta",
-                       score_matrix(f"../resources/{DEFAULT_SCORE_MTX_FILE}"),
+    return execute_msa(f"{RESOURCES_FOLDER}/msa_test_2.fasta",
+                       score_matrix(f"{RESOURCES_FOLDER}/{DEFAULT_SCORE_MTX_FILE}"),
                        -1)
 
 

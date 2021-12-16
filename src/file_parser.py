@@ -1,6 +1,5 @@
 from Bio import SeqIO
-
-from src.score import Score
+from score import Score
 
 
 def fasta_multiple_seqs(file_dir):

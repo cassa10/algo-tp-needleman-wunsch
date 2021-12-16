@@ -1,7 +1,10 @@
 from Bio import pairwise2
 import needleman_wunsh
-from src.file_parser import fasta_first_two_seq, score_matrix
-from src.test_util import execute_tests
+from file_parser import fasta_first_two_seq, score_matrix
+from test_util import execute_tests
+
+RESOURCES_FOLDER = "./resources"
+DEFAULT_SCORE_MTX = f"{RESOURCES_FOLDER}/test_nw_score_matrix"
 
 
 def parse_fasta_and_validate(file_dir, score_mtx):
@@ -25,15 +28,15 @@ def parse_fasta_and_validate(file_dir, score_mtx):
 
 
 def test_1():
-    return parse_fasta_and_validate("../resources/ab.fasta", score_matrix("../resources/test_nw_score_matrix"))
+    return parse_fasta_and_validate(f"{RESOURCES_FOLDER}/ab.fasta", score_matrix(DEFAULT_SCORE_MTX))
 
 
 def test_2():
-    return parse_fasta_and_validate("../resources/sample.fasta", score_matrix("../resources/test_nw_score_matrix"))
+    return parse_fasta_and_validate(f"{RESOURCES_FOLDER}/sample.fasta", score_matrix(DEFAULT_SCORE_MTX))
 
 
 def test_3():
-    return parse_fasta_and_validate("../resources/ae.fasta", score_matrix("../resources/test_nw_score_matrix"))
+    return parse_fasta_and_validate(f"{RESOURCES_FOLDER}/ae.fasta", score_matrix(DEFAULT_SCORE_MTX))
 
 
 def run_tests():

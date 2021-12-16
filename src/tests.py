@@ -1,4 +1,5 @@
-from src import needleman_wunsh_test as nw_test, msa_test
+import msa_test
+import needleman_wunsh_test as nw_test
 
 
 def run_all():

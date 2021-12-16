@@ -5,6 +5,7 @@
 ### [Trabajo Práctico: Final](./TP_final_Heurstica_GRASP_para_MSA.pdf)
 
 ### Pre-requisitos:
+- Python 3.8 (Recomendado)
 - Se necesita tener instalado los paquetes: numpy, matplotlib y biopython.
 
 ### Notas y configuración:
@@ -14,7 +15,9 @@
 - En el file "./src/main.py" se puede modificar la variable "have_run_tests" con un booleano para decidir si correr o no los tests creados.
 - En ./resources/NUC.4.2 se configura el score matrix que esta configurada por defecto.
 - En ./resources/10.fasta se configura el fasta que esta configurada por defecto.
-- Para ejecutar el algoritmo, ejecutar el main definido en "./src/main.py".
+- Para ejecutar el programa, ejecutar el siguiente comando (asumiendo que ya estamos en el root folder del repo):
+> python3 ./src/main.py
+- Si aparece el gráfico en una ventana emergente, habrá que cerrarla para que finalice el programa correctamente.
 - En el folder "./output" se va a imprimir el output del main, los cuales son el gráfico (.png) y el alineamiento resultante (.txt).
 
 

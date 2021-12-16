@@ -1,7 +1,7 @@
 import numpy as np
 import copy
-from src.msa_op import Op
-from src.solution import Solution
+from msa_op import Op
+from solution import Solution
 
 
 def increment_value(sumValues, incValue):
